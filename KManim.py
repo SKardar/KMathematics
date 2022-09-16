@@ -8,7 +8,7 @@ def simple_cubic_bezier(x0,y0,x1,y1):
         np.array([x0, y0, 0]),
         np.array([x1, y1, 0]),
         np.array([1 , 1 , 0]),
-    ])
+    ]) 
 
 def line_between_points(t, x0, y0, x1, y1):
     return (y1 - y0) * (t - x0) / (x1 - x0) + y0 # Linear Function : y-y0 = m(x-x0)
