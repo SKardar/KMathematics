@@ -11,7 +11,7 @@ def trunc(number : float, digits : int = 0) -> float:
 
     Returns:
         float: truncated version of number with n decimals
-    """
+    """ 
     try:
         assert isinstance(digits, int)
         pow10 = 10 ** digits
