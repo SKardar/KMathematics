@@ -1,6 +1,6 @@
 import string
 from fractions import Fraction
-from math import ceil
+from math import ceil, atan, sin, cos, pi, e
 
 def trunc(number : float, digits : int = 0) -> float:
     """truncate will cut a float number at a given decimal without rounding. (round toward zero)
@@ -317,7 +317,6 @@ def yielddigitsum(n : int | float | str):
         n = digitsum(n)
     yield n
 
-
 def isfactorialable(n : int) -> int | bool:
     """Checks whether the input number is the factorial of any Natural number or not. if it is, will return the number, else returns False.
 
@@ -537,6 +536,54 @@ def egyptian(num: int, den: int = 1) -> list[Fraction]:
     if neg:
         egpt = [-1*i for i in egpt]
     return egpt[1:]
+
+def cnthroot(z: complex, n: int) -> dict:
+    """Complex nth root theorem:
+        Any nonzero complex number has exactly n ∈ N distinct nth roots.
+         The roots lie on a circle of radius |z| centered at the origin and spaced out evenly by angles of 2π/n.
+         Concretely, if z = complex(x,y) = x + iy = r cis(θ) = r e^{iθ}, then solotions to c^n = z are given by:
+         c = z**(1/n) = r**(1/n) cis ((2kπ+θ)/n) = r**(1/n) e^(i((2kπ+θ)/n)) for k ∈ {0,1,2,...,n-1}
+
+    Args:
+        z (complex): Any Complex Number
+        n (int): The order of number (The degree of roots)
+
+    Returns:
+        dict: A dictionary consisting of all of the nth roots for k ∈ {0,1,2,...,n-1}
+    """
+    real = z.real
+    imag = z.imag
+    r = (real**2 + imag**2)**(1/2)
+    # Finding Angle theta (We need theta such that: "0 = theta <= 2*pi" but using atan we have: "-pi/2 < atan < pi/2")
+    # Origin = (0,0):
+    if real == 0 and imag == 0:
+        theta  = 0
+    # Positive X-axis and Quadrant I:
+    elif real > 0 and imag >= 0:
+        theta = atan(imag / real)
+    # Positive Y-axis:
+    elif real == 0 and imag > 0:
+        theta = pi/2
+    # Quadrant II:
+    elif real < 0 and imag > 0:
+        theta = atan(imag / real) + pi
+    # Negative X-axis:
+    elif real < 0 and imag == 0:
+        theta = pi
+    # Quadrant III:
+    elif real < 0 and imag < 0:
+        theta = atan(imag / real) + pi
+    # Negative Y-axis:
+    elif real == 0 and imag < 0:
+        theta = 3*pi/2
+    # Quadrant IV:
+    else:
+        theta = atan(imag / real) + 2*pi 
+    nroot = []
+    for k in range(n):
+        # nroot.append((r**(1/n))*((cos(((2*k*pi) + theta)/n)) + ((-1)**(1/2))*sin(((2*k*pi) + theta)/n)))
+        nroot.append((r**(1/n))*(e**(((-1)**(1/2))*(((2*k*pi) + theta)/n))))
+    return {i : nroot[i] for i in range(len(nroot))}
 
 if __name__ == "__main__":
     print("Module is being run standalone by the user")
